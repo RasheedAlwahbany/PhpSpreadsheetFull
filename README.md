@@ -78,6 +78,10 @@ or the appropriate PDF Writer wrapper for the library that you have chosen to in
 
 #### Chart Export
 
+# Export Data
+
+Export data from **MySQL DB** into **Excel Files**.
+
 For Chart export, we support following packages, which you will also need to install yourself using `composer require`
  - [jpgraph/jpgraph](https://packagist.org/packages/jpgraph/jpgraph) (this package was abandoned at version 4.0. 
    You can manually download the latest version that supports PHP 8 and above from [jpgraph.net](https://jpgraph.net/))
