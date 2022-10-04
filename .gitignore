@@ -2,12 +2,13 @@
 /analysis
 /vendor/
 /phpunit.xml
+/DataBackup/
 
 ## IDE support
 *.buildpath
 *.project
 /.settings
 /.idea
-/DataBackup
+
 ## mkdocs output
 /site
