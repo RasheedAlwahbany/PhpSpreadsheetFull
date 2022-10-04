@@ -78,7 +78,7 @@ or the appropriate PDF Writer wrapper for the library that you have chosen to in
 
 #### Chart Export
 
-# Export Data
+## Export Data
 
 Export data from **MySQL DB** into **Excel Files**.
 
