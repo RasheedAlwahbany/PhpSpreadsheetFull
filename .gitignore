@@ -2,7 +2,7 @@
 /analysis
 /vendor/
 /phpunit.xml
-/DataBackup/
+/samples/DataBackup/
 
 ## IDE support
 *.buildpath
