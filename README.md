@@ -22,7 +22,10 @@ See the `composer.json` for other requirements.
 
 ## Installation
 
-Use [composer](https://getcomposer.org) to install PhpSpreadsheet into your project:
+Use [composer](https://getcomposer.org) to install PhpSpreadsheet into your project: <br/>
+or by cmd:
+
+`php -r "readfile('https://getcomposer.org/installer');" | php`
 
 ```sh
 composer require phpoffice/phpspreadsheet
@@ -48,6 +51,10 @@ composer install
 to ensure that the correct dependencies are retrieved to match your deployment environment.
 
 See [CLI vs Application run-time](https://php.watch/articles/composer-platform-check) for more details.
+
+## Runnig on localhost
+
+`php -S localhost:8000 -t samples`
 
 ### Additional Installation Options
 

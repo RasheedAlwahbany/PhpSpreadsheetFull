@@ -1,39 +1,28 @@
 <?php
 
 require_once 'Header.php';
+require '../vendor/autoload.php';
 
-$requirements = [
-    'PHP 7.3.0' => version_compare(PHP_VERSION, '7.3.0', '>='),
-    'PHP extension XML' => extension_loaded('xml'),
-    'PHP extension xmlwriter' => extension_loaded('xmlwriter'),
-    'PHP extension mbstring' => extension_loaded('mbstring'),
-    'PHP extension ZipArchive' => extension_loaded('zip'),
-    'PHP extension GD (optional)' => extension_loaded('gd'),
-    'PHP extension dom (optional)' => extension_loaded('dom'),
-];
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-if (!$helper->isCli()) {
-    ?>
-    <div class="jumbotron">
-        <p>Welcome to PHPSpreadsheet, a library written in pure PHP and providing a set of classes that allow you to read from and to write to different spreadsheet file formats, like Excel and LibreOffice Calc.</p>
-        <p>&nbsp;</p>
-        <p>
-            <a class="btn btn-lg btn-primary" href="https://github.com/PHPOffice/PHPSpreadsheet" role="button"><i class="fa fa-github fa-lg" title="GitHub"></i>  Fork us on Github!</a>
-            <a class="btn btn-lg btn-primary" href="https://phpspreadsheet.readthedocs.io" role="button"><i class="fa fa-book fa-lg" title="Docs"></i>  Read the Docs</a>
-        </p>
-    </div>
-    <?php
-    echo '<h3>Requirement check</h3>';
-    echo '<ul>';
-    foreach ($requirements as $label => $result) {
-        $status = $result ? 'passed' : 'failed';
-        echo "<li>{$label} ... <span class='{$status}'>{$status}</span></li>";
-    }
-    echo '</ul>';
-} else {
-    echo 'Requirement check:' . PHP_EOL;
-    foreach ($requirements as $label => $result) {
-        $status = $result ? '32m passed' : '31m failed';
-        echo "{$label} ... \033[{$status}\033[0m" . PHP_EOL;
+$spreadsheet = new Spreadsheet();
+$sheet = $spreadsheet->getActiveSheet();
+$columns = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K','L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+if($connection){
+    $query = $connection->prepare("SELECT * FROM `cities`");
+    if($query->execute()){
+        $is_header = true;
+        while( $row = $query->fetchObject()){
+            $row_index = $sheet->getHighestRow()+1;
+            $sheet->insertNewRowBefore($row_index);
+            
+            foreach( $row as $key => $value ){
+                if($is_header)
+                $sheet->setCellValue($columns[$row_index].''.$row_index, $value);
+            }
+        }
     }
 }
+$writer = new Xlsx($spreadsheet);
+$writer->save('Cities.xlsx');
