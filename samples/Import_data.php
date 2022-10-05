@@ -8,7 +8,47 @@ use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 $reader = new Xlsx();
 $reader->setReadDataOnly(true);
 
+?>
 
+<div class="container">
+    <div class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <ul class="nav nav-tabs">
+
+                <li class="nav-item active">
+                    <div class="dropdown">
+                        <button class="btn btn-secondary dropdown-toggle" onclick="checkDropDown();" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            Import custom database backup
+                        </button>
+                        <ul id="dropdownMenuButtonMenu">
+                            <?php
+                            if ($connection) {
+                                $query = $connection->prepare(" SHOW TABLES FROM `maintenances_supervisor_dbms` ");
+                                if ($query->execute()) {
+                                    $i = 1;
+                                    while ($row = $query->fetchObject()) { ?>
+                                        <li><a class="dropdown-item" href="?Controller=<?php echo $row->Tables_in_maintenances_supervisor_dbms; ?>">
+                                                <?php echo " Table ( " . $i . " ): " . $row->Tables_in_maintenances_supervisor_dbms; ?>
+                                            </a></li>
+                            <?php $i = $i + 1;
+                                    }
+                                }
+                            } ?>
+                        </ul>
+
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="?Controller=All">Import all database tables backup</a>
+                </li>
+
+        </div>
+
+        <div class="container">
+        <h1>
+          Operation logs:  
+        </h1>
+<?php
 if (!empty($_GET['Controller'])) {
     function updateItem($table, $table_columns)
     {
@@ -93,16 +133,16 @@ if (!empty($_GET['Controller'])) {
                     }
                     if (!empty($update_values)) {
                         if (updateItem($table, $update_values))
-                            echo "<br/>Update ( " . $item_c . " ) succesfully.<br/>";
+                            echo "<br/> Update ( " . $item_c . " ) succesfully.<br/>";
                         else
-                            echo "<br/>Update ( " . $item_c . " ) error.<br/>";
+                            echo "<br/> Update ( " . $item_c . " ) error.<br/>";
                     } else
-                        echo "<br/>Update ( " . $item_c . " ) error.<br/>";
+                        echo "<br/> Update ( " . $item_c . " ) error.<br/>";
                 } else {
                     if (saveItem($table, $item_c))
-                        echo "<br/>Adding ( " . $item_c . " ) succesfully.<br/>";
+                        echo "<br/> Adding ( " . $item_c . " ) succesfully.<br/>";
                     else
-                        echo "<br/>Adding ( " . $item_c . " ) error.<br/>";
+                        echo "<br/> Adding ( " . $item_c . " ) error.<br/>";
                 }
             }
            
@@ -116,11 +156,11 @@ if (!empty($_GET['Controller'])) {
             $sheet = $spreadsheet->getActiveSheet();
             if (!empty($sheet->getCoordinates())){
                 getBackups($_GET['Controller'], $sheet);
-                echo "<br/>backup success.<br/>For the ( " . $_GET['Controller'] . " ) file<br/><br/>";
+                echo "<br/> backup success.<br/> For the ( " . $_GET['Controller'] . " ) file<br/><br/>";
             }else
-                echo "<br/>Oopsy error.<br/>The ( " . $_GET['Controller'] . " ) file is empty<br/><br/>";
+                echo "<br/> Oopsy error.<br/> The ( " . $_GET['Controller'] . " ) file is empty<br/><br/>";
         } else {
-            echo "<br/>Oopsy error.<br/>The file which you want to backup it is not exist.<br/><br/>";
+            echo "<br/> Oopsy error.<br/> The ( " . $_GET['Controller'] . " ) file which you want to backup it is not exist.<br/><br/>";
         }
     } else {
         $query = $connection->prepare(" SHOW TABLES FROM `maintenances_supervisor_dbms` ");
@@ -132,11 +172,11 @@ if (!empty($_GET['Controller'])) {
                     $sheet = $spreadsheet->getActiveSheet();
                     if (!empty($sheet->getCoordinates())){
                         getBackups($row->Tables_in_maintenances_supervisor_dbms, $sheet);
-                        echo "<br/>backup success.<br/>For the ( " . $row->Tables_in_maintenances_supervisor_dbms . " ) file<br/><br/>";
+                        echo "<br/> backup success.<br/> For the ( " . $row->Tables_in_maintenances_supervisor_dbms . " ) file<br/><br/>";
                     }else
-                        echo "<br/>Oopsy error.<br/>The ( " . $row->Tables_in_maintenances_supervisor_dbms . " ) file is empty<br/><br/>";
+                        echo "<br/> Oopsy error.<br/> The ( " . $row->Tables_in_maintenances_supervisor_dbms . " ) file is empty<br/><br/>";
                 } else {
-                    echo "<br/>Oopsy error.<br/>The file which you want to backup it is not exist.<br/><br/>";
+                    echo "<br/> Oopsy error.<br/> The ( " . $row->Tables_in_maintenances_supervisor_dbms . " ) file which you want to backup it is not exist.<br/><br/>";
                 }
             }
         }
@@ -144,36 +184,5 @@ if (!empty($_GET['Controller'])) {
 }
 ?>
 
-<div class="container">
-    <div class="navbar navbar-default" role="navigation">
-        <div class="container-fluid">
-            <ul class="nav nav-tabs">
-
-                <li class="nav-item active">
-                    <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" onclick="checkDropDown();" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                            Import custom database backup
-                        </button>
-                        <ul id="dropdownMenuButtonMenu">
-                            <?php
-                            if ($connection) {
-                                $query = $connection->prepare(" SHOW TABLES FROM `maintenances_supervisor_dbms` ");
-                                if ($query->execute()) {
-                                    $i = 1;
-                                    while ($row = $query->fetchObject()) { ?>
-                                        <li><a class="dropdown-item" href="?Controller=<?php echo $row->Tables_in_maintenances_supervisor_dbms; ?>">
-                                                <?php echo " Table ( " . $i . " ): " . $row->Tables_in_maintenances_supervisor_dbms; ?>
-                                            </a></li>
-                            <?php $i = $i + 1;
-                                    }
-                                }
-                            } ?>
-                        </ul>
-
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="?Controller=All">Import all database tables backup</a>
-                </li>
-
         </div>
+    </div>
