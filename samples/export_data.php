@@ -60,6 +60,7 @@ function ExportData($table)
 <div class="container">
     <div class="navbar navbar-default" role="navigation">
         <div class="container-fluid">
+        <?php echo $helper->getPageHeading()."<br/>"; ?>
             <ul class="nav nav-tabs">
 
                 <li class="nav-item active">
