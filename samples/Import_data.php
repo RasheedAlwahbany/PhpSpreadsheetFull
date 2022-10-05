@@ -28,7 +28,7 @@ $reader->setReadDataOnly(true);
                                 if ($query->execute()) {
                                     $i = 1;
                                     while ($row = $query->fetchObject()) {
-                                        if (!str_contains($row->Tables_in_maintenances_supervisor_dbms, "view")) { ?>
+                                        if (!str_contains($row->Tables_in_maintenances_supervisor_dbms, "view") && !str_contains($row->Tables_in_maintenances_supervisor_dbms, "_v_")) { ?>
                                             <li><a class="dropdown-item" href="?Controller=<?php echo $row->Tables_in_maintenances_supervisor_dbms; ?>">
                                                     <?php echo " Table ( " . $i . " ) => " . $row->Tables_in_maintenances_supervisor_dbms; ?>
                                                 </a></li>
@@ -169,7 +169,7 @@ $reader->setReadDataOnly(true);
                     if ($query->execute()) {
                         $i = 1;
                         while ($row = $query->fetchObject()) {
-                            if (!str_contains($row->Tables_in_maintenances_supervisor_dbms, "view")) {
+                            if (!str_contains($row->Tables_in_maintenances_supervisor_dbms, "view") && !str_contains($row->Tables_in_maintenances_supervisor_dbms, "_v_")) {
                                 if (file_exists("DataBackup/" . $row->Tables_in_maintenances_supervisor_dbms . ".xlsx")) {
                                     $spreadsheet = $reader->load("DataBackup/" . $row->Tables_in_maintenances_supervisor_dbms . ".xlsx");
                                     $sheet = $spreadsheet->getActiveSheet();
