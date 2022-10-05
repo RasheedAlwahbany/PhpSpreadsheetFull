@@ -186,3 +186,4 @@ if (!empty($_GET['Controller'])) {
 
         </div>
     </div>
+</div>

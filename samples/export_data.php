@@ -6,7 +6,6 @@ require '../vendor/autoload.php';
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
-$err = "";
 function ExportData($table)
 {
     global $connection;
@@ -24,9 +23,9 @@ function ExportData($table)
                 $sheet->insertNewRowBefore($row_index);
                 $i = 0;
                 foreach ($row as $key => $value) {
-
+                    if(empty(getCellName($i)))
+                        $i=0;
                     $col = getCellName($i) . $columns[$i];
-                    echo $col;
                     if ($is_header) {
                         $sheet->setCellValue($col . '' . $row_index, $key);
                     } else {
@@ -42,36 +41,20 @@ function ExportData($table)
                     $i = 0;
                     while (is_file('DataBackup/' . $table . $i . '.xlsx')) {
                         $i = $i + 1;
-                        print('DataBackup/' . $table . $i . '.xlsx');
+                        print('<br/> The ( DataBackup/' . $table . $i . '.xlsx ) file created succesfully.');
                     }
                     $writer->save('DataBackup/' . $table . $i . '.xlsx');
                 } else
                     $writer->save('DataBackup/' . $table . '.xlsx');
             } else {
-                $err = "Error";
-                echo "<br/>Oopsy error.<br/><br/>This is $table table is blank. <br/><br/>";
+                
+                echo "<br/> Oopsy error.<br/><br/> This is ( $table ) table is blank. <br/><br/>";
+                return false;
             }
         }
     }
+    return true;
 }
-
-if (!empty($_GET['Controller'])) {
-    if ($_GET['Controller'] != "All") {
-        // if(!str_contains($row->Tables_in_maintenances_supervisor_dbms, "view"))
-        ExportData($_GET['Controller']);
-    } else {
-        $query = $connection->prepare("SHOW TABLES FROM `maintenances_supervisor_dbms` ");
-        if ($query->execute()) {
-            while ($row = $query->fetchObject()) {
-                // if(!str_contains($row->Tables_in_maintenances_supervisor_dbms, "view"))
-                ExportData($row->Tables_in_maintenances_supervisor_dbms);
-            }
-        }
-    }
-    if (empty($err))
-        header('Location: http://localhost:8000/export_data.php?');
-}
-
 ?>
 
 <div class="container">
@@ -107,3 +90,32 @@ if (!empty($_GET['Controller'])) {
                 </li>
 
         </div>
+        <div class="container">
+        <h1>
+          Operation logs:  
+        </h1>
+
+<?php
+if (!empty($_GET['Controller'])) {
+    $error=false;
+    if ($_GET['Controller'] != "All") {
+        // if(!str_contains($row->Tables_in_maintenances_supervisor_dbms, "view"))
+        $error=ExportData($_GET['Controller']);
+    } else {
+        $query = $connection->prepare("SHOW TABLES FROM `maintenances_supervisor_dbms` ");
+        if ($query->execute()) {
+            while ($row = $query->fetchObject()) {
+                // if(!str_contains($row->Tables_in_maintenances_supervisor_dbms, "view"))
+                $error=ExportData($row->Tables_in_maintenances_supervisor_dbms);
+            }
+        }
+    }
+    if (!$error)
+        echo "<script>document.location='http://localhost:8000/export_data.php?'</script>";
+}
+
+?>
+
+        </div>
+    </div>
+</div>
