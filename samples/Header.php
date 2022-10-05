@@ -5,7 +5,31 @@ use PhpOffice\PhpSpreadsheet\Helper\Sample;
 error_reporting(E_ALL);
 
 require_once __DIR__ . '/Bootstrap.php';
+$columns = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z');
+function getCellName($i)
+{
+    $col = "";
+    if ($i <= 25)
+        $col = "";
+    else if ($i > 25) {
+        $col = 'A';
+        $i = 0;
+    } else if ($i > 51) {
+        $col = 'B';
+        $i = 0;
+    } else if ($i > 77) {
+        $col = 'C';
+        $i = 0;
+    } else if ($i > 103) {
+        $col = 'D';
+        $i = 0;
+    } else {
+        $col = 'E';
+        $i = 0;
+    }
 
+    return $col;
+}
 $helper = new Sample();
 
 // Return to the caller script when runs by CLI
@@ -28,38 +52,38 @@ if ($helper->isCli()) {
 
 </head>
 
-    <div class="container">
-        <div class="navbar navbar-default" role="navigation">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="/">PHPSpreadsheet</a>
-                </div>
-                <ul class="nav nav-tabs">
-                    <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="export_data.php">Export Data To Excel</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="import_data.php">Import Data From Excel</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Info</a>
-                    </li>
-                </ul>
+<div class="container">
+    <div class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">PHPSpreadsheet</a>
             </div>
+            <ul class="nav nav-tabs">
+                <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="export_data.php">Export Data To Excel</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="import_data.php">Import Data From Excel</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Info</a>
+                </li>
+            </ul>
         </div>
+    </div>
 
 
-        <?php
-        echo $helper->getPageHeading();
-        $connection = new pdo("mysql:host=localhost;dbname=maintenances_supervisor_dbms;port=3306;charset=utf8", "root", "");
-        $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $connection->setAttribute(PDO::ATTR_EMULATE_PREPARES, true);
+    <?php
+    echo $helper->getPageHeading();
+    $connection = new pdo("mysql:host=localhost;dbname=maintenances_supervisor_dbms;port=3306;charset=utf8", "root", "");
+    $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $connection->setAttribute(PDO::ATTR_EMULATE_PREPARES, true);
